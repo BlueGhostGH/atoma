@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "import", "jsdoc", "oxc", "promise", "typescript", "typescript", "unicorn"],
+  "categories": {
+    "correctness": "error",
+    "perf": "error",
+    "style": "error",
+    "nursery": "warn",
+    "pedantic": "warn",
+    "restriction": "warn",
+    "suspicious": "warn"
+  },
+  "settings": {},
+  "env": {
+    "builtin": true
+  },
+  "globals": {},
+  "ignorePatterns": []
+}
