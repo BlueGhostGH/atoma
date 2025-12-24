@@ -10,6 +10,11 @@
     "restriction": "warn",
     "suspicious": "warn"
   },
+  "rules": {
+    "id-length": "allow",
+    "no-magic-numbers": ["error", { "ignoreTypeIndexes": true }],
+    "no-named-export": "allow"
+  },
   "settings": {},
   "env": {
     "builtin": true
