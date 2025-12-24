@@ -50,7 +50,7 @@ The `atoma` package provides a collection of modules designed for functional pro
 
 ### Part III: Type System
 - [x] Higher-kinded types (HKT, Fn, Apply, $, $$, $$$)
-- [ ] Type identity and branding (TypeId, Brand, Branded)
+- [x] Type identity and branding (TypeId, Brand, Branded)
 - [ ] Trait system (Trait, ImplRegistry, impl, getImpl)
 
 ### Part IV: Primitive Types
