@@ -21,8 +21,8 @@ Named from Greek ἄτομα ("indivisibles"), Atoma provides irreducible, compo
 
 This is a Bun monorepo with the following structure:
 
-| Package | Description |
-| ------- | ----------- |
+| Package | Description                                                                    |
+| ------- | ------------------------------------------------------------------------------ |
 | `atoma` | Core library with the effect system, primitives, traits, and platform services |
 
 More packages will be added as the project grows (e.g., platform implementations, utilities, wrappers).
