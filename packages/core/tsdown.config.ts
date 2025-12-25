@@ -1,6 +1,6 @@
 import { defineConfig } from "tsdown";
 
-// oxlint-disable-next-line no-default-export sort-keys
+// oxlint-disable-next-line no-default-export
 export default defineConfig({
   format: ["esm", "cjs"],
   dts: { tsgo: true },
