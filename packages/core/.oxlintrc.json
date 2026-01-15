@@ -26,7 +26,11 @@
         "id-length": "allow",
         "max-lines": [
             "error",
-            { "skipBlankLines": true, "skipComments": true }
+            {
+                "max": 1000,
+                "skipBlankLines": true,
+                "skipComments": true
+            }
         ],
         "no-magic-numbers": [
             "error",
