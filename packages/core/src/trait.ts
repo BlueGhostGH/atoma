@@ -3,7 +3,7 @@ import { PHANTOM } from "./phantom";
 
 /**
  * Represents a trait with a name, a signature, and supertraits.
- * @since 0.0.1
+ * @since 0.1.0
  */
 interface Trait<
   Name extends string,
@@ -26,7 +26,7 @@ interface Trait<
  *   interface ImplRegistry extends ImplFor<typeof Show, "MyType", MyShowImpl> {}
  * }
  * ```
- * @since 0.0.1
+ * @since 0.1.0
  */
 interface ImplRegistry extends Record<string, unknown> {
   readonly _tag?: "ImplRegistry";
@@ -34,7 +34,7 @@ interface ImplRegistry extends Record<string, unknown> {
 
 /**
  * A helper to construct a key for the ImplRegistry in the format `TraitName/TypeName`.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type TraitKey<Name extends string, N extends string> = `${Name}/${N}`;
 
@@ -48,7 +48,7 @@ type TraitKey<Name extends string, N extends string> = `${Name}/${N}`;
  *   interface ImplRegistry extends ImplFor<typeof Show, "MyType", { show: (a: MyType) => Str }> {}
  * }
  * ```
- * @since 0.0.1
+ * @since 0.1.0
  */
 type ImplFor<T extends Trait<string, unknown>, N extends string, I extends T["_signature"]> = {
   readonly [K in TraitKey<T["_name"], N>]: I;
@@ -56,7 +56,7 @@ type ImplFor<T extends Trait<string, unknown>, N extends string, I extends T["_s
 
 /**
  * Extracts the return type of a method from a trait signature.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type MethodReturn<
   T extends Trait<string, unknown>,
@@ -65,7 +65,7 @@ type MethodReturn<
 
 /**
  * Extracts the parameter types of a method from a trait signature.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type MethodParams<
   T extends Trait<string, unknown>,
@@ -75,7 +75,7 @@ type MethodParams<
 /**
  * Extracts the parameter types excluding the first (self) parameter.
  * Used for instance method invocations where self is passed implicitly.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type MethodParamsWithoutSelf<
   T extends Trait<string, unknown>,
@@ -87,7 +87,7 @@ type MethodParamsWithoutSelf<
  * @param name - The name of the trait.
  * @param options - Optional configuration (supers: parent traits).
  * @returns A trait object with the given name and signature.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const makeTrait = <
   Name extends string,
@@ -109,7 +109,7 @@ const TRAIT_IMPL_REGISTRY: Record<string, unknown> = {};
  * @param trait - The trait to check.
  * @param typeName - The name of the type.
  * @returns True if the implementation exists, false otherwise.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const hasImpl = <T extends Trait<string, unknown>, N extends string>(
   trait: T,
@@ -126,7 +126,7 @@ const hasImpl = <T extends Trait<string, unknown>, N extends string>(
  * @param typeName - The name of the type implementing the trait.
  * @param implementation - The implementation of the trait methods.
  * @throws If a required supertrait is not implemented.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const registerImpl = <
   T extends Trait<string, unknown>,
@@ -155,7 +155,7 @@ const registerImpl = <
  * @param trait - The trait to look up.
  * @param typeName - The name of the type.
  * @returns The trait implementation if found, otherwise undefined.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const getImpl = <T extends Trait<string, unknown>, N extends string>(
   trait: T,
@@ -167,21 +167,21 @@ const getImpl = <T extends Trait<string, unknown>, N extends string>(
 
 /**
  * Type-level check if a type implements a trait.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type Implements<N extends string, T extends Trait<string, unknown>> =
   TraitKey<T["_name"], N> extends keyof ImplRegistry ? true : false;
 
 /**
  * Represents a type that is bound by a trait.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type Bound<N extends string, T extends Trait<string, unknown>> =
   Implements<N, T> extends true ? N : never;
 
 /**
  * Represents a type that is bound by multiple traits.
- * @since 0.0.1
+ * @since 0.1.0
  */
 type Bounds<
   N extends string,
@@ -200,7 +200,7 @@ type Bounds<
  * Gets the type name from a typed value.
  * @param value - The typed value.
  * @returns The name of the type.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const getTypeName = <N extends string>(value: Typed<N>): N => value[TypeIdSymbol]._name;
 
@@ -210,7 +210,7 @@ const getTypeName = <N extends string>(value: Typed<N>): N => value[TypeIdSymbol
  * If the input is a typed value, the type name is extracted from it.
  * @param value - A string type name or a typed value.
  * @returns The type name.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const extractTypeName = <N extends string>(value: string | Typed<N>): N => {
   if (typeof value === "string") {
@@ -228,7 +228,7 @@ const extractTypeName = <N extends string>(value: string | Typed<N>): N => {
  * @param args - The arguments for the method.
  * @returns The result of the method invocation.
  * @throws Error if the trait implementation is not registered for the type.
- * @since 0.0.1
+ * @since 0.1.0
  */
 function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
   trait: T,
@@ -246,7 +246,7 @@ function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"
  * @param args - The remaining arguments (excluding self).
  * @returns The result of the method invocation.
  * @throws Error if the trait implementation is not registered for the type.
- * @since 0.0.1
+ * @since 0.1.0
  */
 function invoke<
   T extends Trait<string, unknown>,
@@ -284,7 +284,7 @@ function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"
  * @param method - The method name.
  * @returns An invoker function for static calls.
  * @throws Error (from the returned invoker) if the trait implementation is not registered.
- * @since 0.0.1
+ * @since 0.1.0
  */
 function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
   trait: T,
@@ -298,7 +298,7 @@ function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signa
  * @param method - The method name.
  * @returns An invoker function for instance calls.
  * @throws Error (from the returned invoker) if the trait implementation is not registered.
- * @since 0.0.1
+ * @since 0.1.0
  */
 function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
   trait: T,
@@ -322,7 +322,7 @@ function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signa
  * @param typeName - The name of the type.
  * @returns The trait implementation.
  * @throws Error if the trait implementation is not registered for the type.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const getBound = <T extends Trait<string, unknown>, N extends string>(
   trait: T,
@@ -338,7 +338,7 @@ const getBound = <T extends Trait<string, unknown>, N extends string>(
 /**
  * Describes the structure of a type for derivation purposes.
  * Used by Derivers to generate trait implementations automatically.
- * @since 0.0.1
+ * @since 0.1.0
  */
 interface TypeStructure {
   /**
@@ -361,7 +361,7 @@ interface TypeStructure {
 
 /**
  * A trait deriver that can automatically generate implementations.
- * @since 0.0.1
+ * @since 0.1.0
  */
 interface Deriver<T extends Trait<string, unknown>> {
   /**
@@ -389,7 +389,7 @@ interface Deriver<T extends Trait<string, unknown>> {
  * @param trait - The trait to create a deriver for.
  * @param options - Deriver configuration.
  * @returns A deriver instance.
- * @since 0.0.1
+ * @since 0.1.0
  */
 const makeDeriver = <T extends Trait<string, unknown>>(
   trait: T,
