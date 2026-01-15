@@ -36,7 +36,7 @@ interface ImplRegistry extends Record<string, unknown> {
  * A helper to construct a key for the ImplRegistry in the format `TraitName/TypeName`.
  * @since 0.0.1
  */
-type TraitKey<TName extends string, AName extends string> = `${TName}/${AName}`;
+type TraitKey<Name extends string, N extends string> = `${Name}/${N}`;
 
 /**
  * Helper type for ergonomic module augmentation of ImplRegistry.
@@ -169,32 +169,32 @@ const getImpl = <T extends Trait<string, unknown>, N extends string>(
  * Type-level check if a type implements a trait.
  * @since 0.0.1
  */
-type Implements<AName extends string, T extends Trait<string, unknown>> =
-  TraitKey<T["_name"], AName> extends keyof ImplRegistry ? true : false;
+type Implements<N extends string, T extends Trait<string, unknown>> =
+  TraitKey<T["_name"], N> extends keyof ImplRegistry ? true : false;
 
 /**
  * Represents a type that is bound by a trait.
  * @since 0.0.1
  */
-type Bound<AName extends string, T extends Trait<string, unknown>> =
-  Implements<AName, T> extends true ? AName : never;
+type Bound<N extends string, T extends Trait<string, unknown>> =
+  Implements<N, T> extends true ? N : never;
 
 /**
  * Represents a type that is bound by multiple traits.
  * @since 0.0.1
  */
 type Bounds<
-  AName extends string,
+  N extends string,
   TS extends readonly Trait<string, unknown>[],
 > = TS extends readonly [infer Head, ...infer Tail]
   ? Head extends Trait<string, unknown>
-    ? Implements<AName, Head> extends true
+    ? Implements<N, Head> extends true
       ? Tail extends readonly Trait<string, unknown>[]
-        ? Bounds<AName, Tail>
-        : AName
+        ? Bounds<N, Tail>
+        : N
       : never
-    : AName
-  : AName;
+    : N
+  : N;
 
 /**
  * Gets the type name from a typed value.
