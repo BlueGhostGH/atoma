@@ -2,3 +2,5 @@
 export * as HKT from "./hkt";
 export * as Brand from "./brand";
 export * as Trait from "./trait";
+export * as Unit from "./unit";
+export * as Never from "./never";
