@@ -6,13 +6,14 @@ import { PHANTOM } from "./phantom";
  * @since 0.1.0
  */
 interface Trait<
-  Name extends string,
-  Signature,
-  Supers extends readonly Trait<string, unknown>[] = readonly never[],
+    Name extends string,
+    Signature,
+    Supers extends readonly Trait<string, unknown>[] =
+        readonly never[],
 > {
-  readonly _name: Name;
-  readonly _signature: Signature;
-  readonly _supers: Supers;
+    readonly _name: Name;
+    readonly _signature: Signature;
+    readonly _supers: Supers;
 }
 
 /**
@@ -29,14 +30,17 @@ interface Trait<
  * @since 0.1.0
  */
 interface ImplRegistry extends Record<string, unknown> {
-  readonly _tag?: "ImplRegistry";
+    readonly _tag?: "ImplRegistry";
 }
 
 /**
  * A helper to construct a key for the ImplRegistry in the format `TraitName/TypeName`.
  * @since 0.1.0
  */
-type TraitKey<Name extends string, N extends string> = `${Name}/${N}`;
+type TraitKey<
+    Name extends string,
+    N extends string,
+> = `${Name}/${N}`;
 
 /**
  * Helper type for ergonomic module augmentation of ImplRegistry.
@@ -50,8 +54,12 @@ type TraitKey<Name extends string, N extends string> = `${Name}/${N}`;
  * ```
  * @since 0.1.0
  */
-type ImplFor<T extends Trait<string, unknown>, N extends string, I extends T["_signature"]> = {
-  readonly [K in TraitKey<T["_name"], N>]: I;
+type ImplFor<
+    T extends Trait<string, unknown>,
+    N extends string,
+    I extends T["_signature"],
+> = {
+    readonly [K in TraitKey<T["_name"], N>]: I;
 };
 
 /**
@@ -59,18 +67,22 @@ type ImplFor<T extends Trait<string, unknown>, N extends string, I extends T["_s
  * @since 0.1.0
  */
 type MethodReturn<
-  T extends Trait<string, unknown>,
-  K extends keyof T["_signature"],
-> = T["_signature"][K] extends (...args: never[]) => infer R ? R : never;
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+> = T["_signature"][K] extends (...args: never[]) => infer R
+    ? R
+    : never;
 
 /**
  * Extracts the parameter types of a method from a trait signature.
  * @since 0.1.0
  */
 type MethodParams<
-  T extends Trait<string, unknown>,
-  K extends keyof T["_signature"],
-> = T["_signature"][K] extends (...args: infer P) => unknown ? P : never;
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+> = T["_signature"][K] extends (...args: infer P) => unknown
+    ? P
+    : never;
 
 /**
  * Extracts the parameter types excluding the first (self) parameter.
@@ -78,9 +90,14 @@ type MethodParams<
  * @since 0.1.0
  */
 type MethodParamsWithoutSelf<
-  T extends Trait<string, unknown>,
-  K extends keyof T["_signature"],
-> = T["_signature"][K] extends (self: unknown, ...args: infer P) => unknown ? P : never;
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+> = T["_signature"][K] extends (
+    self: unknown,
+    ...args: infer P
+) => unknown
+    ? P
+    : never;
 
 /**
  * Defines a trait.
@@ -90,16 +107,19 @@ type MethodParamsWithoutSelf<
  * @since 0.1.0
  */
 const makeTrait = <
-  Name extends string,
-  Signature,
-  Supers extends readonly Trait<string, unknown>[] = readonly never[],
+    Name extends string,
+    Signature,
+    Supers extends readonly Trait<string, unknown>[] =
+        readonly never[],
 >(
-  name: Name,
-  options: { readonly supers?: Supers } = {},
+    name: Name,
+    options: {
+        readonly supers?: Supers;
+    } = {},
 ): Trait<Name, Signature, Supers> => ({
-  _name: name,
-  _signature: PHANTOM as Signature,
-  _supers: options.supers ?? ([] as unknown as Supers),
+    _name: name,
+    _signature: PHANTOM as Signature,
+    _supers: options.supers ?? ([] as unknown as Supers),
 });
 
 const TRAIT_IMPL_REGISTRY: Record<string, unknown> = {};
@@ -111,12 +131,16 @@ const TRAIT_IMPL_REGISTRY: Record<string, unknown> = {};
  * @returns True if the implementation exists, false otherwise.
  * @since 0.1.0
  */
-const hasImpl = <T extends Trait<string, unknown>, N extends string>(
-  trait: T,
-  typeName: N,
+const hasImpl = <
+    T extends Trait<string, unknown>,
+    N extends string,
+>(
+    trait: T,
+    typeName: N,
 ): boolean => {
-  const key: TraitKey<T["_name"], N> = `${trait._name}/${typeName}`;
-  return key in TRAIT_IMPL_REGISTRY;
+    const key: TraitKey<T["_name"], N> =
+        `${trait._name}/${typeName}`;
+    return key in TRAIT_IMPL_REGISTRY;
 };
 
 /**
@@ -129,25 +153,29 @@ const hasImpl = <T extends Trait<string, unknown>, N extends string>(
  * @since 0.1.0
  */
 const registerImpl = <
-  T extends Trait<string, unknown>,
-  N extends string,
-  I extends T["_signature"],
+    T extends Trait<string, unknown>,
+    N extends string,
+    I extends T["_signature"],
 >(
-  trait: T,
-  typeName: N,
-  implementation: I,
+    trait: T,
+    typeName: N,
+    implementation: I,
 ): void => {
-  // Validate supertraits are implemented
-  for (const superTrait of trait._supers as readonly Trait<string, unknown>[]) {
-    if (!hasImpl(superTrait, typeName)) {
-      throw new Error(
-        `Cannot implement trait "${trait._name}" for "${typeName}": ` +
-          `supertrait "${superTrait._name}" is not implemented`,
-      );
+    // Validate supertraits are implemented
+    for (const superTrait of trait._supers as readonly Trait<
+        string,
+        unknown
+    >[]) {
+        if (!hasImpl(superTrait, typeName)) {
+            throw new Error(
+                `Cannot implement trait "${trait._name}" for "${typeName}": ` +
+                    `supertrait "${superTrait._name}" is not implemented`,
+            );
+        }
     }
-  }
-  const key: TraitKey<T["_name"], N> = `${trait._name}/${typeName}`;
-  TRAIT_IMPL_REGISTRY[key] = implementation as unknown;
+    const key: TraitKey<T["_name"], N> =
+        `${trait._name}/${typeName}`;
+    TRAIT_IMPL_REGISTRY[key] = implementation as unknown;
 };
 
 /**
@@ -157,44 +185,60 @@ const registerImpl = <
  * @returns The trait implementation if found, otherwise undefined.
  * @since 0.1.0
  */
-const getImpl = <T extends Trait<string, unknown>, N extends string>(
-  trait: T,
-  typeName: N,
+const getImpl = <
+    T extends Trait<string, unknown>,
+    N extends string,
+>(
+    trait: T,
+    typeName: N,
 ): T["_signature"] | undefined => {
-  const key: TraitKey<T["_name"], N> = `${trait._name}/${typeName}`;
-  return TRAIT_IMPL_REGISTRY[key] as T["_signature"] | undefined;
+    const key: TraitKey<T["_name"], N> =
+        `${trait._name}/${typeName}`;
+    return TRAIT_IMPL_REGISTRY[key] as
+        | T["_signature"]
+        | undefined;
 };
 
 /**
  * Type-level check if a type implements a trait.
  * @since 0.1.0
  */
-type Implements<N extends string, T extends Trait<string, unknown>> =
-  TraitKey<T["_name"], N> extends keyof ImplRegistry ? true : false;
+type Implements<
+    N extends string,
+    T extends Trait<string, unknown>,
+> =
+    TraitKey<T["_name"], N> extends keyof ImplRegistry
+        ? true
+        : false;
 
 /**
  * Represents a type that is bound by a trait.
  * @since 0.1.0
  */
-type Bound<N extends string, T extends Trait<string, unknown>> =
-  Implements<N, T> extends true ? N : never;
+type Bound<
+    N extends string,
+    T extends Trait<string, unknown>,
+> = Implements<N, T> extends true ? N : never;
 
 /**
  * Represents a type that is bound by multiple traits.
  * @since 0.1.0
  */
 type Bounds<
-  N extends string,
-  TS extends readonly Trait<string, unknown>[],
-> = TS extends readonly [infer Head, ...infer Tail]
-  ? Head extends Trait<string, unknown>
-    ? Implements<N, Head> extends true
-      ? Tail extends readonly Trait<string, unknown>[]
-        ? Bounds<N, Tail>
+    N extends string,
+    TS extends readonly Trait<string, unknown>[],
+> = TS extends readonly [
+    infer Head,
+    ...infer Tail,
+]
+    ? Head extends Trait<string, unknown>
+        ? Implements<N, Head> extends true
+            ? Tail extends readonly Trait<string, unknown>[]
+                ? Bounds<N, Tail>
+                : N
+            : never
         : N
-      : never
-    : N
-  : N;
+    : N;
 
 /**
  * Gets the type name from a typed value.
@@ -202,7 +246,9 @@ type Bounds<
  * @returns The name of the type.
  * @since 0.1.0
  */
-const getTypeName = <N extends string>(value: Typed<N>): N => value[TypeIdSymbol]._name;
+const getTypeName = <N extends string>(
+    value: Typed<N>,
+): N => value[TypeIdSymbol]._name;
 
 /**
  * Extracts a type name from either a string or a typed value.
@@ -212,11 +258,13 @@ const getTypeName = <N extends string>(value: Typed<N>): N => value[TypeIdSymbol
  * @returns The type name.
  * @since 0.1.0
  */
-const extractTypeName = <N extends string>(value: string | Typed<N>): N => {
-  if (typeof value === "string") {
-    return value as N;
-  }
-  return getTypeName(value);
+const extractTypeName = <N extends string>(
+    value: string | Typed<N>,
+): N => {
+    if (typeof value === "string") {
+        return value as N;
+    }
+    return getTypeName(value);
 };
 
 /**
@@ -230,11 +278,14 @@ const extractTypeName = <N extends string>(value: string | Typed<N>): N => {
  * @throws Error if the trait implementation is not registered for the type.
  * @since 0.1.0
  */
-function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
-  trait: T,
-  typeName: string,
-  method: K,
-  ...args: MethodParams<T, K>
+function invoke<
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+>(
+    trait: T,
+    typeName: string,
+    method: K,
+    ...args: MethodParams<T, K>
 ): MethodReturn<T, K>;
 
 /**
@@ -249,32 +300,42 @@ function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"
  * @since 0.1.0
  */
 function invoke<
-  T extends Trait<string, unknown>,
-  K extends keyof T["_signature"],
-  N extends string,
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+    N extends string,
 >(
-  trait: T,
-  target: Typed<N>,
-  method: K,
-  ...args: MethodParamsWithoutSelf<T, K>
+    trait: T,
+    target: Typed<N>,
+    method: K,
+    ...args: MethodParamsWithoutSelf<T, K>
 ): MethodReturn<T, K>;
 
-function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
-  trait: T,
-  target: string | Typed<string>,
-  method: K,
-  ...args: unknown[]
+function invoke<
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+>(
+    trait: T,
+    target: string | Typed<string>,
+    method: K,
+    ...args: unknown[]
 ): MethodReturn<T, K> {
-  const typeName = extractTypeName(target);
-  const implementation = getImpl(trait, typeName);
-  if (!implementation) {
-    throw new Error(`Trait ${trait._name} not implemented for ${typeName}`);
-  }
-  const fn = (implementation as Record<K, (...args: unknown[]) => MethodReturn<T, K>>)[method];
-  if (typeof target === "string") {
-    return fn(...args);
-  }
-  return fn(target, ...args);
+    const typeName = extractTypeName(target);
+    const implementation = getImpl(trait, typeName);
+    if (!implementation) {
+        throw new Error(
+            `Trait ${trait._name} not implemented for ${typeName}`,
+        );
+    }
+    const fn = (
+        implementation as Record<
+            K,
+            (...args: unknown[]) => MethodReturn<T, K>
+        >
+    )[method];
+    if (typeof target === "string") {
+        return fn(...args);
+    }
+    return fn(target, ...args);
 }
 
 /**
@@ -286,10 +347,16 @@ function invoke<T extends Trait<string, unknown>, K extends keyof T["_signature"
  * @throws Error (from the returned invoker) if the trait implementation is not registered.
  * @since 0.1.0
  */
-function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
-  trait: T,
-  method: K,
-): (typeName: string, ...args: MethodParams<T, K>) => MethodReturn<T, K>;
+function makeInvoker<
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+>(
+    trait: T,
+    method: K,
+): (
+    typeName: string,
+    ...args: MethodParams<T, K>
+) => MethodReturn<T, K>;
 
 /**
  * Creates an invoker for a trait method (instance invocation).
@@ -300,20 +367,37 @@ function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signa
  * @throws Error (from the returned invoker) if the trait implementation is not registered.
  * @since 0.1.0
  */
-function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
-  trait: T,
-  method: K,
+function makeInvoker<
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+>(
+    trait: T,
+    method: K,
 ): <N extends string>(
-  target: Typed<N>,
-  ...args: MethodParamsWithoutSelf<T, K>
+    target: Typed<N>,
+    ...args: MethodParamsWithoutSelf<T, K>
 ) => MethodReturn<T, K>;
 
-function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signature"]>(
-  trait: T,
-  method: K,
-): (target: string | Typed<string>, ...args: unknown[]) => MethodReturn<T, K> {
-  return (target: string | Typed<string>, ...args: unknown[]): MethodReturn<T, K> =>
-    invoke(trait, target as string, method, ...(args as MethodParams<T, K>));
+function makeInvoker<
+    T extends Trait<string, unknown>,
+    K extends keyof T["_signature"],
+>(
+    trait: T,
+    method: K,
+): (
+    target: string | Typed<string>,
+    ...args: unknown[]
+) => MethodReturn<T, K> {
+    return (
+        target: string | Typed<string>,
+        ...args: unknown[]
+    ): MethodReturn<T, K> =>
+        invoke(
+            trait,
+            target as string,
+            method,
+            ...(args as MethodParams<T, K>),
+        );
 }
 
 /**
@@ -324,15 +408,20 @@ function makeInvoker<T extends Trait<string, unknown>, K extends keyof T["_signa
  * @throws Error if the trait implementation is not registered for the type.
  * @since 0.1.0
  */
-const getBound = <T extends Trait<string, unknown>, N extends string>(
-  trait: T,
-  typeName: N,
+const getBound = <
+    T extends Trait<string, unknown>,
+    N extends string,
+>(
+    trait: T,
+    typeName: N,
 ): T["_signature"] => {
-  const implementation = getImpl(trait, typeName);
-  if (!implementation) {
-    throw new Error(`Trait ${trait._name} not implemented for ${typeName}`);
-  }
-  return implementation;
+    const implementation = getImpl(trait, typeName);
+    if (!implementation) {
+        throw new Error(
+            `Trait ${trait._name} not implemented for ${typeName}`,
+        );
+    }
+    return implementation;
 };
 
 /**
@@ -341,22 +430,25 @@ const getBound = <T extends Trait<string, unknown>, N extends string>(
  * @since 0.1.0
  */
 interface TypeStructure {
-  /**
-   * The kind of type: struct (product), sum (coproduct), or newtype (wrapper).
-   */
-  readonly kind: "struct" | "sum" | "newtype";
-  /**
-   * The name of the type.
-   */
-  readonly name: string;
-  /**
-   * For structs: field names and their type names.
-   * For sums: variant names and their payloads.
-   * For newtypes: the underlying type name.
-   */
-  readonly fields?: Record<string, string>;
-  readonly variants?: Record<string, TypeStructure | null>;
-  readonly underlying?: string;
+    /**
+     * The kind of type: struct (product), sum (coproduct), or newtype (wrapper).
+     */
+    readonly kind: "struct" | "sum" | "newtype";
+    /**
+     * The name of the type.
+     */
+    readonly name: string;
+    /**
+     * For structs: field names and their type names.
+     * For sums: variant names and their payloads.
+     * For newtypes: the underlying type name.
+     */
+    readonly fields?: Record<string, string>;
+    readonly variants?: Record<
+        string,
+        TypeStructure | null
+    >;
+    readonly underlying?: string;
 }
 
 /**
@@ -364,24 +456,26 @@ interface TypeStructure {
  * @since 0.1.0
  */
 interface Deriver<T extends Trait<string, unknown>> {
-  /**
-   * The trait this deriver generates implementations for.
-   */
-  readonly trait: T;
+    /**
+     * The trait this deriver generates implementations for.
+     */
+    readonly trait: T;
 
-  /**
-   * Checks if this deriver can derive the trait for the given type structure.
-   * @param structure - The structure of the type.
-   * @returns True if derivation is possible.
-   */
-  readonly canDerive: (structure: TypeStructure) => boolean;
+    /**
+     * Checks if this deriver can derive the trait for the given type structure.
+     * @param structure - The structure of the type.
+     * @returns True if derivation is possible.
+     */
+    readonly canDerive: (
+        structure: TypeStructure,
+    ) => boolean;
 
-  /**
-   * Derives and registers the trait implementation for a type.
-   * @param structure - The structure of the type to derive for.
-   * @throws If derivation is not possible for this structure.
-   */
-  readonly derive: (structure: TypeStructure) => void;
+    /**
+     * Derives and registers the trait implementation for a type.
+     * @param structure - The structure of the type to derive for.
+     * @throws If derivation is not possible for this structure.
+     */
+    readonly derive: (structure: TypeStructure) => void;
 }
 
 /**
@@ -392,49 +486,54 @@ interface Deriver<T extends Trait<string, unknown>> {
  * @since 0.1.0
  */
 const makeDeriver = <T extends Trait<string, unknown>>(
-  trait: T,
-  options: {
-    readonly canDerive: (structure: TypeStructure) => boolean;
-    readonly deriveImpl: (structure: TypeStructure) => T["_signature"];
-  },
+    trait: T,
+    options: {
+        readonly canDerive: (
+            structure: TypeStructure,
+        ) => boolean;
+        readonly deriveImpl: (
+            structure: TypeStructure,
+        ) => T["_signature"];
+    },
 ): Deriver<T> => ({
-  trait: trait,
-  canDerive: options.canDerive,
-  // NOTE: False positive lint warning for require-param
-  // oxlint-disable-next-line require-param
-  derive: (structure: TypeStructure): void => {
-    if (!options.canDerive(structure)) {
-      throw new Error(
-        `Cannot derive trait "${trait._name}" for type "${structure.name}" with kind "${structure.kind}"`,
-      );
-    }
-    const implementation = options.deriveImpl(structure);
-    registerImpl(trait, structure.name, implementation);
-  },
+    trait: trait,
+    canDerive: options.canDerive,
+    // NOTE: False positive lint warning for require-param
+    // oxlint-disable-next-line require-param
+    derive: (structure: TypeStructure): void => {
+        if (!options.canDerive(structure)) {
+            throw new Error(
+                `Cannot derive trait "${trait._name}" for type "${structure.name}" with kind "${structure.kind}"`,
+            );
+        }
+        const implementation =
+            options.deriveImpl(structure);
+        registerImpl(trait, structure.name, implementation);
+    },
 });
 
 export {
-  makeTrait,
-  registerImpl,
-  getImpl,
-  hasImpl,
-  getTypeName,
-  invoke,
-  makeInvoker,
-  getBound,
-  makeDeriver,
+    makeTrait,
+    registerImpl,
+    getImpl,
+    hasImpl,
+    getTypeName,
+    invoke,
+    makeInvoker,
+    getBound,
+    makeDeriver,
 };
 export type {
-  Trait,
-  ImplRegistry,
-  TraitKey,
-  ImplFor,
-  MethodReturn,
-  MethodParams,
-  MethodParamsWithoutSelf,
-  Implements,
-  Bound,
-  Bounds,
-  Deriver,
-  TypeStructure,
+    Trait,
+    ImplRegistry,
+    TraitKey,
+    ImplFor,
+    MethodReturn,
+    MethodParams,
+    MethodParamsWithoutSelf,
+    Implements,
+    Bound,
+    Bounds,
+    Deriver,
+    TypeStructure,
 };

@@ -1,14 +1,14 @@
 {
-  "name": "scratchpad",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "bun run index.ts --watch"
-  },
-  "dependencies": {
-    "atoma": "workspace:*"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  }
+    "name": "scratchpad",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "bun run index.ts --watch"
+    },
+    "dependencies": {
+        "atoma": "workspace:*"
+    },
+    "devDependencies": {
+        "bun-types": "latest"
+    }
 }

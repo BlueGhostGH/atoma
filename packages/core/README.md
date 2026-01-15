@@ -29,12 +29,14 @@ The `atoma` package provides a collection of modules designed for functional pro
 ## Todo
 
 ### Part I: Program Model
+
 - [ ] Defect type and built-in defect tags
 - [ ] Exit type (Success, Aborted, Trace, Frame)
 - [ ] Program type and core operations
 - [ ] Main entry point with exit handling
 
 ### Part II: Effect System
+
 - [ ] Effect core (succeed, succeedLazy, suspend)
 - [ ] Effect functor/monad operations (map, flatMap, zip)
 - [ ] Effect conditionals and loops
@@ -49,11 +51,13 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Timing operations (timed, timeout, delay, retry, repeat)
 
 ### Part III: Type System
-- [x] Higher-kinded types (HKT, Fn, Apply, $, $$, $$$)
-- [x] Type identity and branding (TypeId, Brand, Branded)
-- [ ] Trait system (Trait, ImplRegistry, impl, getImpl)
+
+- [x] Higher-kinded types
+- [x] Type identity and branding
+- [x] Trait system
 
 ### Part IV: Primitive Types
+
 - [ ] Unit and Never types
 - [ ] Bool type with operations
 - [ ] Ordering type
@@ -64,12 +68,14 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Bytes type
 
 ### Part V: Data Traits
+
 - [ ] Eq, Ord, Hash traits
 - [ ] Show, Debug, Clone traits
 - [ ] Default, Semigroup, Monoid traits
 - [ ] Implement traits for primitives
 
 ### Part VI: Algebraic Data Types
+
 - [ ] Option (None, Some)
 - [ ] Result (Ok, Err)
 - [ ] Pair and Triple
@@ -79,6 +85,7 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Set (immutable hash set)
 
 ### Part VII: Higher-Kinded Traits
+
 - [ ] Functor trait
 - [ ] Apply, Applicative traits
 - [ ] FlatMap, Monad traits
@@ -86,6 +93,7 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Filterable trait
 
 ### Part VIII: Concurrency Primitives
+
 - [ ] Ref (mutable reference with atomic updates)
 - [ ] Deferred (single-value async variable)
 - [ ] Queue (concurrent FIFO)
@@ -93,6 +101,7 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Semaphore and Mutex
 
 ### Part IX: Services & Dependency Injection
+
 - [ ] ServiceTag type
 - [ ] Layer type and operations
 - [ ] Console service
@@ -104,11 +113,13 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Network service (HTTP client/server)
 
 ### Part X: Time Types
+
 - [ ] Duration type and operations
 - [ ] Instant type and operations
 - [ ] TimeZone type
 
 ### Part XI: Streams
+
 - [ ] Stream core (empty, succeed, unfold, iterate, repeat, range)
 - [ ] Stream transformation (map, flatMap, filter, take, drop, scan)
 - [ ] Stream combination (concat, zip, merge, interleave, flattenPar)
@@ -118,11 +129,13 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Sink type and operations
 
 ### Part XII: JSON
+
 - [ ] Json type (Null, Bool, Number, String, Array, Object)
 - [ ] Json parsing and stringification
 - [ ] Json access helpers
 
 ### Part XIII: Schema & Validation
+
 - [ ] Schema core (Schema<I, O>, decode, encode)
 - [ ] Schema primitives (unknown, string, number, boolean, int, float, null, undefined, literal)
 - [ ] Schema combinators (struct, partial, record, tuple, list, union, tagged, optional, nullable, lazy)
@@ -130,17 +143,20 @@ The `atoma` package provides a collection of modules designed for functional pro
 - [ ] Schema derivation (typeOf, inputOf, encoder, decoder, arbitrary)
 
 ### Part XIV: ADT Builders & Derivation
+
 - [ ] Struct builder
 - [ ] ADT (sum type) builder
 - [ ] Newtype builder
 - [ ] Automatic trait derivation for struct, sum, newtype
 
 ### Part XV: Testing
+
 - [ ] Arbitrary type and generators
 - [ ] Property testing (forAll, check, CheckResult)
 - [ ] Assertions (equal, isTrue, isFalse, isSome, isNone, isOk, isErr, throws, contains, hasLength)
 
 ### Part XVI: Platform Implementations
+
 - [ ] Bun platform (Console, Clock, Random, Env, Args, FileSystem, Network)
 - [ ] Browser platform (Console, Clock, Random, Network)
 

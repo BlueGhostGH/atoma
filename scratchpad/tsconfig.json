@@ -1,17 +1,17 @@
 {
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": false,
-    "declaration": false,
-    "declarationMap": false,
-    "isolatedDeclarations": false,
-    "verbatimModuleSyntax": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "types": ["bun-types"],
-    "paths": {
-      "atoma": ["../packages/core/src/index.ts"]
-    }
-  },
-  "include": ["."]
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "composite": false,
+        "declaration": false,
+        "declarationMap": false,
+        "isolatedDeclarations": false,
+        "verbatimModuleSyntax": false,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "types": ["bun-types"],
+        "paths": {
+            "atoma": ["../packages/core/src/index.ts"]
+        }
+    },
+    "include": ["."]
 }

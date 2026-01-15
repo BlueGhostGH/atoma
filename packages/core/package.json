@@ -1,43 +1,43 @@
 {
-  "name": "atoma",
-  "version": "0.0.0",
-  "license": "CC0-1.0",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "type": "module",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+    "name": "atoma",
+    "version": "0.0.0",
+    "license": "CC0-1.0",
+    "sideEffects": false,
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "scripts": {
+        "dev": "tsdown src/index.ts --watch",
+        "build": "tsdown src/index.ts",
+        "release": "bun run build && changeset publish",
+        "test": "bun test",
+        "bench": "bun bench bench/**/*.ts",
+        "fmt": "bunx oxfmt",
+        "lint": "bunx oxlint --type-aware"
+    },
+    "devDependencies": {
+        "@arethetypeswrong/core": "^0.18.2",
+        "@changesets/cli": "^2.29.8",
+        "@types/bun": "latest",
+        "@typescript/native-preview": "^7.0.0-dev.20251221.1",
+        "oxfmt": "^0.18.0",
+        "oxlint": "^1.33.0",
+        "oxlint-tsgolint": "^0.9.1",
+        "publint": "^0.3.16",
+        "tsdown": "^0.18.2"
     }
-  },
-  "scripts": {
-    "dev": "tsdown src/index.ts --watch",
-    "build": "tsdown src/index.ts",
-    "release": "bun run build && changeset publish",
-    "test": "bun test",
-    "bench": "bun bench bench/**/*.ts",
-    "fmt": "bunx oxfmt",
-    "lint": "bunx oxlint --type-aware"
-  },
-  "devDependencies": {
-    "@arethetypeswrong/core": "^0.18.2",
-    "@changesets/cli": "^2.29.8",
-    "@types/bun": "latest",
-    "@typescript/native-preview": "^7.0.0-dev.20251221.1",
-    "oxfmt": "^0.18.0",
-    "oxlint": "^1.33.0",
-    "oxlint-tsgolint": "^0.9.1",
-    "publint": "^0.3.16",
-    "tsdown": "^0.18.2"
-  }
 }

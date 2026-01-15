@@ -1,7 +1,0 @@
-{
-  "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "experimentalSortImports": {},
-  "objectWrap": "always",
-  "printWidth": 60,
-  "tabWidth": 4
-}

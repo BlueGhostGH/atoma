@@ -1,30 +1,47 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["import", "jsdoc", "oxc", "promise", "typescript", "typescript", "unicorn"],
-  "categories": {
-    "correctness": "error",
-    "perf": "error",
-    "style": "error",
-    "nursery": "warn",
-    "pedantic": "warn",
-    "restriction": "warn",
-    "suspicious": "warn"
-  },
-  "rules": {
-    "consistent-type-specifier-style": ["error", "prefer-inline"],
-    "id-length": "allow",
-    "max-lines": ["error", { "skipBlankLines": true, "skipComments": true }],
-    "no-magic-numbers": ["error", { "ignoreTypeIndexes": true }],
-    "no-named-export": "allow",
-    "prefer-default-export": "allow",
-    "require-param-type": "allow",
-    "require-returns-type": "allow",
-    "sort-keys": "allow"
-  },
-  "settings": {},
-  "env": {
-    "builtin": true
-  },
-  "globals": {},
-  "ignorePatterns": []
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": [
+        "import",
+        "jsdoc",
+        "oxc",
+        "promise",
+        "typescript",
+        "typescript",
+        "unicorn"
+    ],
+    "categories": {
+        "correctness": "error",
+        "perf": "error",
+        "style": "error",
+        "nursery": "warn",
+        "pedantic": "warn",
+        "restriction": "warn",
+        "suspicious": "warn"
+    },
+    "rules": {
+        "consistent-type-specifier-style": [
+            "error",
+            "prefer-inline"
+        ],
+        "id-length": "allow",
+        "max-lines": [
+            "error",
+            { "skipBlankLines": true, "skipComments": true }
+        ],
+        "no-magic-numbers": [
+            "error",
+            { "ignoreTypeIndexes": true }
+        ],
+        "no-named-export": "allow",
+        "prefer-default-export": "allow",
+        "require-param-type": "allow",
+        "require-returns-type": "allow",
+        "sort-keys": "allow"
+    },
+    "settings": {},
+    "env": {
+        "builtin": true
+    },
+    "globals": {},
+    "ignorePatterns": []
 }

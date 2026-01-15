@@ -1,16 +1,16 @@
 {
-  "name": "monorepo",
-  "private": true,
-  "workspaces": [
-    "packages/*",
-    "scratchpad"
-  ],
-  "scripts": {
-    "dev": "bun --filter \"*\" run dev",
-    "build": "bun --filter \"*\" run build",
-    "fmt": "bun --filter \"*\" run fmt",
-    "lint": "bun --filter \"*\" run lint",
-    "test": "bun --filter \"*\" run test",
-    "release": "bun run build && bun x changeset publish"
-  }
+    "name": "monorepo",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "scratchpad"
+    ],
+    "scripts": {
+        "dev": "bun --filter \"*\" run dev",
+        "build": "bun --filter \"*\" run build",
+        "fmt": "bun --filter \"*\" run fmt",
+        "lint": "bun --filter \"*\" run lint",
+        "test": "bun --filter \"*\" run test",
+        "release": "bun run build && bun x changeset publish"
+    }
 }
