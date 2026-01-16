@@ -4,3 +4,4 @@ export * as Brand from "./brand";
 export * as Trait from "./trait";
 export * as Unit from "./unit";
 export * as Never from "./never";
+export * as Bool from "./bool";
