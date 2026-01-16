@@ -118,7 +118,13 @@ const makeTrait = <
     } = {},
 ): Trait<Name, Signature, Supers> => ({
     _name: name,
+    /* NOTE: `PHANTOM` is a sentinel value (typed as `never`) used only to carry
+       type information. The `Signature` type is purely compile-time metadata. */
+    // oxlint-disable-next-line no-unsafe-type-assertion
     _signature: PHANTOM as Signature,
+    /* NOTE: When no supers are provided, we default to an empty array. The cast
+       is unavoidable because `[]` cannot be inferred as the generic `Supers` type. */
+    // oxlint-disable-next-line no-unsafe-type-assertion
     _supers: options.supers ?? ([] as unknown as Supers),
 });
 
@@ -262,6 +268,9 @@ const extractTypeName = <N extends string>(
     value: string | Typed<N>,
 ): N => {
     if (typeof value === "string") {
+        /* NOTE: When a string is passed, we trust the caller to provide a valid
+           type name. TypeScript cannot verify runtime strings match the type `N`. */
+        // oxlint-disable-next-line no-unsafe-type-assertion
         return value as N;
     }
     return getTypeName(value);
@@ -321,17 +330,23 @@ function invoke<
 ): MethodReturn<T, K> {
     const typeName = extractTypeName(target);
     const implementation = getImpl(trait, typeName);
+    /* NOTE: `getImpl` returns `T["_signature"] | undefined`. We check for absence
+       using truthiness since implementations are always objects (truthy values). */
+    // oxlint-disable-next-line strict-boolean-expressions
     if (!implementation) {
         throw new Error(
             `Trait ${trait._name} not implemented for ${typeName}`,
         );
     }
-    const fn = (
-        implementation as Record<
-            K,
-            (...args: unknown[]) => MethodReturn<T, K>
-        >
-    )[method];
+    /* NOTE: We need to access the method by key `K`. TypeScript cannot infer that
+       `implementation[method]` is callable with the correct signature at runtime. */
+    type MethodRecord = Record<
+        K,
+        (...args: unknown[]) => MethodReturn<T, K>
+    >;
+    // oxlint-disable-next-line no-unsafe-type-assertion
+    const implRecord = implementation as MethodRecord;
+    const fn = implRecord[method];
     if (typeof target === "string") {
         return fn(...args);
     }
@@ -388,16 +403,25 @@ function makeInvoker<
     target: string | Typed<string>,
     ...args: unknown[]
 ) => MethodReturn<T, K> {
+    /* NOTE: The casts below are required due to function overloads. The `invoke`
+       function has separate overloads for string and Typed targets, but we need
+       to call it with a union type. The implementation of `invoke` correctly
+       handles both cases via runtime type checking. */
     return (
         target: string | Typed<string>,
         ...args: unknown[]
-    ): MethodReturn<T, K> =>
-        invoke(
+    ): MethodReturn<T, K> => {
+        // oxlint-disable-next-line no-unsafe-type-assertion
+        const targetStr = target as string;
+        // oxlint-disable-next-line no-unsafe-type-assertion
+        const typedArgs = args as MethodParams<T, K>;
+        return invoke(
             trait,
-            target as string,
+            targetStr,
             method,
-            ...(args as MethodParams<T, K>),
+            ...typedArgs,
         );
+    };
 }
 
 /**
@@ -416,6 +440,9 @@ const getBound = <
     typeName: N,
 ): T["_signature"] => {
     const implementation = getImpl(trait, typeName);
+    /* NOTE: `getImpl` returns `T["_signature"] | undefined`. We check for absence
+       using truthiness since implementations are always objects (truthy values). */
+    // oxlint-disable-next-line strict-boolean-expressions
     if (!implementation) {
         throw new Error(
             `Trait ${trait._name} not implemented for ${typeName}`,
