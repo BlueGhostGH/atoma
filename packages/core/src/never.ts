@@ -30,8 +30,10 @@ interface Never extends Brand<"Never"> {
  * @returns Any type A, since this code is unreachable.
  * @since 0.1.0
  */
-const absurd = <A>(_never: Never): A => {
-    throw new Error("absurd: Never value encountered");
+const unreachable = <A>(_never: Never): A => {
+    throw new Error(
+        "unreachable: `Never` value encountered",
+    );
 };
 
 /**
@@ -43,5 +45,5 @@ const absurd = <A>(_never: Never): A => {
  */
 const isNever = (_value: unknown): _value is Never => false;
 
-export { NeverSymbol, absurd, isNever };
+export { NeverSymbol, unreachable, isNever };
 export type { Never };
