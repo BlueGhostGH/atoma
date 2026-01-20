@@ -123,13 +123,13 @@ const isFalse = (b: Bool): b is False => b._tag === "False";
 
 /**
  * Logical AND of two `Bool` values.
- * @param a - The first `Bool`.
- * @param b - The second `Bool`.
+ * @param self - The first `Bool`.
+ * @param other - The second `Bool`.
  * @returns `True` if both are `True`, `False` otherwise.
  * @since 0.1.0
  */
-const and = (a: Bool, b: Bool): Bool => {
-    if (a._tag === "True" && b._tag === "True") {
+const and = (self: Bool, other: Bool): Bool => {
+    if (self._tag === "True" && other._tag === "True") {
         return internal.true;
     }
     return internal.false;
@@ -137,13 +137,13 @@ const and = (a: Bool, b: Bool): Bool => {
 
 /**
  * Logical OR of two `Bool` values.
- * @param a - The first `Bool`.
- * @param b - The second `Bool`.
+ * @param self - The first `Bool`.
+ * @param other - The second `Bool`.
  * @returns `True` if either is `True`, `False` otherwise.
  * @since 0.1.0
  */
-const or = (a: Bool, b: Bool): Bool => {
-    if (a._tag === "True" || b._tag === "True") {
+const or = (self: Bool, other: Bool): Bool => {
+    if (self._tag === "True" || other._tag === "True") {
         return internal.true;
     }
     return internal.false;
@@ -164,28 +164,28 @@ const not = (a: Bool): Bool => {
 
 /**
  * Logical XOR (exclusive or) of two `Bool` values.
- * @param a - The first `Bool`.
- * @param b - The second `Bool`.
+ * @param self - The first `Bool`.
+ * @param other - The second `Bool`.
  * @returns `True` if exactly one is `True`, `False` otherwise.
  * @since 0.1.0
  */
-const xor = (a: Bool, b: Bool): Bool => {
-    if (a._tag === b._tag) {
+const xor = (self: Bool, other: Bool): Bool => {
+    if (self._tag === other._tag) {
         return internal.false;
     }
     return internal.true;
 };
 
 /**
- * Logical implication (a → b).
- * Returns `False` only when `a` is `True` and `b` is `False`.
- * @param a - The antecedent `Bool`.
- * @param b - The consequent `Bool`.
- * @returns `True` if `a` implies `b`, `False` otherwise.
+ * Logical implication (self → other).
+ * Returns `False` only when `self` is `True` and `other` is `False`.
+ * @param self - The antecedent `Bool`.
+ * @param other - The consequent `Bool`.
+ * @returns `True` if `self` implies `other`, `False` otherwise.
  * @since 0.1.0
  */
-const implies = (a: Bool, b: Bool): Bool => {
-    if (a._tag === "False" || b._tag === "True") {
+const implies = (self: Bool, other: Bool): Bool => {
+    if (self._tag === "False" || other._tag === "True") {
         return internal.true;
     }
     return internal.false;
