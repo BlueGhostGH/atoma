@@ -34,9 +34,10 @@
         ],
         "no-magic-numbers": [
             "error",
-            { "ignoreTypeIndexes": true }
+            { "ignore": [0, 1], "ignoreTypeIndexes": true }
         ],
         "no-named-export": "allow",
+        "no-namespace": "allow",
         "prefer-default-export": "allow",
         "require-param-type": "allow",
         "require-returns-type": "allow",
